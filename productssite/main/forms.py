@@ -12,7 +12,7 @@ class ProductForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Введите название продукта...'
             }),
-            "brand": TextInput(attrs={
+            "brand": Select(attrs={
                 'id': 'brand',
                 'class': 'form-control',
                 'placeholder': 'Введите название фирмы...'

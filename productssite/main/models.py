@@ -2,6 +2,17 @@ from django.db import models
 from django.contrib.postgres.validators import (MinValueValidator, MaxValueValidator)
 
 
+class Brand(models.Model):
+    brand_name = models.CharField('Название фирмы', max_length = 80, unique=True)
+    rating = models.IntegerField('Рейтинг(1-10)',validators=[MinValueValidator(1), MaxValueValidator(10)])
+
+    class Meta:
+        verbose_name = "Фирма"
+        verbose_name_plural = "Фирмы"
+
+    def __str__(self):
+        return self.brand_name
+
 
 class ProductGroup(models.Model):
     group_name = models.CharField('Название отдела', max_length = 70, unique=True)
@@ -16,14 +27,19 @@ class ProductGroup(models.Model):
 
 
 class Products(models.Model):
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name='Фирма'
+    )
     productGroup = models.ForeignKey(
         ProductGroup,
         on_delete=models.CASCADE,
         null=True,
-        verbose_name='Продукты'
+        verbose_name='Отдел продуктов'
     )
     title = models.CharField('Название', max_length = 60)
-    brand = models.CharField('Фирма', max_length=50)
     description = models.TextField('Описание товара', blank=True)
     price = models.IntegerField('Цена, руб.', validators=[MinValueValidator(1), MaxValueValidator(9999999)])
 

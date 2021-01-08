@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import ProductGroup, Products, Salerman, Sale, SaleCheck
+from .models import Brand, ProductGroup, Products, Salerman, Sale, SaleCheck
 
 
+admin.site.register(Brand)
 admin.site.register(ProductGroup)
 admin.site.register(Products)
 admin.site.register(Salerman)
