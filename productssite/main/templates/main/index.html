@@ -37,10 +37,15 @@
             <h1>Добавить продукт</h1>
             <form method="post" style="margin-top: 5vh;">
                 {% csrf_token %}
+                <label for="title">Название товара:</label>
                 {{form.title}}<br>
+                <label for="brand">Компания-производитель:</label>
                 {{form.brand}}<br>
+                <label for="productGroup">Отдел продукта:</label>
                 {{form.productGroup}}<br>
+                <label for="description">Описание товара:</label>
                 {{form.description}}<br>
+                <label for="price">Цена:</label>
                 {{form.price}}<br>
                 <button type="submit" class="btn btn-primary">Добавить</button>
                 <span>{{ error }}</span>
