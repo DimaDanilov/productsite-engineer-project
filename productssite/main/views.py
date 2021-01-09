@@ -12,6 +12,13 @@ class ProductsView(APIView):
         serializer = ProductsSerializer(products, many=True)
         return Response({"products": serializer.data})
 
+    def post(self, request):
+        products = request.data.get('product')
+        serializer = ProductsSerializer(data=products)
+        if serializer.is_valid(raise_exception=True):
+            product_saved = serializer.save()
+        return Response({"success": "Product '{}' created successfully".format(product_saved.title)})
+
 
 def index(request):
     error = ''
