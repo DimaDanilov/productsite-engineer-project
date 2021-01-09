@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Products
 from .serializers import ProductsSerializer
-from .forms import ProductForm
+from .forms import ProductForm, PriceFilterForm
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -23,9 +23,19 @@ def index(request):
             error="Форма не валидна"
 
     products = Products.objects.all()
+    formsort = PriceFilterForm(request.GET)
+
+    if formsort.is_valid():
+        if formsort.cleaned_data['price_min']:
+            products = products.filter(price__gte=formsort.cleaned_data['price_min'])
+
+        if formsort.cleaned_data['price_max']:
+            products = products.filter(price__lte=formsort.cleaned_data['price_max'])
+
     form = ProductForm()
     context = {
         'products': products,
+        'formsort': formsort,
         'form': form,
         'error': error
     }

@@ -1,5 +1,11 @@
 from .models import Products
 from django.forms import ModelForm, TextInput, Select, Textarea, NumberInput
+from django import forms
+
+
+class PriceFilterForm(forms.Form):
+    price_min = forms.IntegerField(label="От", required=False)
+    price_max = forms.IntegerField(label="До", required=False)
 
 
 class ProductForm(ModelForm):

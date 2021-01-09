@@ -25,6 +25,17 @@
 
         <div style="margin-top: 5vh;">
             <h1 >Список продуктов</h1>
+
+            <div>
+                <form action="" method="get">
+                    <div style="margin-top: 5vh; display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 2%">
+                        {{formsort.as_p}}
+                    </div>
+                    <input type="submit" value="Поиск" class="btn btn-success">
+                </form>
+            </div>
+
+
             <div style="display: grid; margin-top: 5vh; grid-template-columns: repeat(4, 1fr); grid-gap: 2%">
                 {% for el in products %}
                     <div class="card text-white bg-success mb-3" style="max-width: 18rem">
