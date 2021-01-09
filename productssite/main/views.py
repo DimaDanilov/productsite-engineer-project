@@ -1,6 +1,16 @@
 from django.shortcuts import render
 from .models import Products
+from .serializers import ProductsSerializer
 from .forms import ProductForm
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+
+class ProductsView(APIView):
+    def get(self, request):
+        products = Products.objects.all()
+        serializer = ProductsSerializer(products, many=True)
+        return Response({"products": serializer.data})
 
 
 def index(request):

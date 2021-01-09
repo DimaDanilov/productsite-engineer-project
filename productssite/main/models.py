@@ -51,17 +51,48 @@ class Products(models.Model):
         return self.title
 
 
+class Post(models.Model):
+    postcode = models.IntegerField('Код должности', validators=[MinValueValidator(1), MaxValueValidator(9999)])
+    postname = models.CharField('Название должности', max_length=250)
+    
+    class Meta:
+        verbose_name = "Должность"
+        verbose_name_plural = "Должности"
+
+    def __str__(self):
+        return self.postname
+
+
 class Salerman(models.Model):
-    salercode = models.IntegerField('Код продавца', validators=[MinValueValidator(1), MaxValueValidator(9999999)])
+    salercode = models.IntegerField('Код работника', validators=[MinValueValidator(1), MaxValueValidator(9999999)])
     salername = models.CharField('ФИО', max_length=250)
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name='Должность'
+    )
     cash = models.IntegerField('Заработная плата, руб.', validators=[MinValueValidator(1), MaxValueValidator(9999999)])
 
     class Meta:
-        verbose_name = "Продавец"
-        verbose_name_plural = "Продавцы"
+        verbose_name = "Работник"
+        verbose_name_plural = "Работники"
 
     def __str__(self):
         return self.salername
+
+
+class Customer(models.Model):
+    customercode = models.IntegerField('Код покупателя', validators=[MinValueValidator(1), MaxValueValidator(9999999)])
+    customername = models.CharField('ФИО', max_length=250)
+
+    class Meta:
+        verbose_name = "Покупатель"
+        verbose_name_plural = "Покупатели"
+
+    def __str__(self):
+        return str(self.customercode)
+
 
 
 class Sale(models.Model):
@@ -81,12 +112,19 @@ class Sale(models.Model):
     def __str__(self):
         return str(self.salecode)
 
+
 class SaleCheck(models.Model):
     salerman = models.ForeignKey(
         Salerman,
         on_delete=models.CASCADE,
         null=True,
         verbose_name='Продавец'
+    )
+    сustomer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name='Покупатель'
     )
     sale = models.ForeignKey(
         Sale,
@@ -103,3 +141,45 @@ class SaleCheck(models.Model):
 
     def __str__(self):
         return str(self.salecheckcode)
+
+
+class Promotion(models.Model):
+    promotioncode = models.IntegerField('Код акции', validators=[MinValueValidator(1), MaxValueValidator(9999999)], unique=True)
+    promotionname = models.CharField('Название акции', max_length=250)
+    description = models.TextField('Описание акции', blank=True)
+
+    class Meta:
+        verbose_name = "Акция"
+        verbose_name_plural = "Акции"
+
+    def __str__(self):
+        return str(self.promotioncode)
+
+
+class Delivery(models.Model):
+    deliverycode = models.IntegerField('Код доставки', validators=[MinValueValidator(1), MaxValueValidator(9999999)], unique=True)
+    saleCheck = models.ForeignKey(
+        SaleCheck,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name='Чек'
+    )
+    promotion = models.ForeignKey(
+        Promotion,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name='Акция'
+    )
+    salerman = models.ForeignKey(
+        Salerman,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name='Курьер'
+    )
+
+    class Meta:
+        verbose_name = "Доставка"
+        verbose_name_plural = "Доставки"
+
+    def __str__(self):
+        return str(self.deliverycode)

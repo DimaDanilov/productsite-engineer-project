@@ -17,8 +17,14 @@
 
     <div style="width: 85%; margin: auto">
 
-        <div>
-            <h1 style="margin-top: 5vh;">Список продуктов</h1>
+        <div style="display: grid; margin-top: 5vh; grid-template-columns: repeat(4, 1fr); grid-gap: 2%">
+            <a class="btn btn btn-dark" href="./api/products">api/products</a>
+        
+        </div>
+
+
+        <div style="margin-top: 5vh;">
+            <h1 >Список продуктов</h1>
             <div style="display: grid; margin-top: 5vh; grid-template-columns: repeat(4, 1fr); grid-gap: 2%">
                 {% for el in products %}
                     <div class="card text-white bg-success mb-3" style="max-width: 18rem">
